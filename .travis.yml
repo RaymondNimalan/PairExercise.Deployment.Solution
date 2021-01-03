@@ -15,13 +15,14 @@ install:
   - npm ci # faster, goes only from package-lock
 before_script:
   - psql -c 'create database "ray-app-async-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
-
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE
+before_deploy: # omit node_modules, since we set skip_cleanup below
+  - rm -rf node_modules
+deploy: # see README for details on these keys
+  # prevents travis from deleting the build
+  skip_cleanup: true
+  provider: heroku
+  # app should be your heroku app name; see README
+  app: ray-app-async
+  # the secure key indicates an encrypted value; see README
+  api_key:
+    secure: BP3ApCnTYYzrVOyKHbe9zHTf4Rz51yhKlpQ9GnLcLGHsjCrdWabj50lUziFneoJ8GZmNqNP+5TjXzsA7gAZJyd00oqA/R60MgRMIrhM+N5qAdGZFtOFoOv7fwaMIRyT1AA2MqQWf8+DmenLrA33N73FQSHfxEm9GjL0SiB8lS+VlHndMQsZG/lxyyOdTHae4oodVZOAOvNBWUztFu4gm5t4T2osS57iUNyUvCZKX8zuUYwyrkID36JW1KIDjRL97SJxBgJMXIccRJa/S3J9ulPkQqlOI0nTVa6LcFvud+PTfvSAYYF1GF+7bqc9VCm4xJyS/O83TcNEH2brvTb09UAJh/Izu07TnccTq7VJo1/kqONm/zajfJYd8dK01+hRWLb/tpBpRgUs0r11u45v1yoBqgFaigplLnr8X6F+xegrL64eFez9AkZ2gzAyqI7xwMpZIc0pQN4wTEOiYKWIDGBe3AJFDCR1396LHA7A3hd7ahvRjTLdvT2pRUpor0+E8uv1slRbRcXSHDIbjdxBhPzEX/5tq/uq+BegSIfyPSh3mWjp8Gw+SpfUPBFR7vMH3h4Acoezh5PRl1sBkP9ciuRlQbeiJuWIeVjxSCR285zwajw860dArggK8FWUR9dSdC70cmmy3qvOJFNnaeA8ZSaUHB70l4wqHy8uSN2339ng=
